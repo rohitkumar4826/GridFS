@@ -1,0 +1,11 @@
+import './App.css';
+import FileUpload from './file';
+function App() {
+  return (
+    <div className="App">
+      <FileUpload/>
+    </div>
+  );
+}
+
+export default App;
