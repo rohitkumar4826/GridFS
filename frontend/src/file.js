@@ -58,6 +58,27 @@ const FileUpload = () => {
       .catch(error => console.error("Error deleting file:", error));
   };
 
+  // Function to render file previews
+  const renderFilePreview = (file) => {
+    console.log(file.metadata.type);
+    console.log(file);
+    const fileUrl = `http://localhost:5000/file/${file.filename}`;
+
+    // Render based on MIME type
+    switch (file.metadata.type) {
+        case 'image/jpeg':
+        case 'image/png':
+        case 'image/jpg':
+          return <img src={fileUrl} alt={file.filename} style={{ maxWidth: '200px', maxHeight: '200px' }} />;
+        case 'application/pdf':
+          return <iframe src={fileUrl} style={{ width: '100%', height: '500px' }} title={file.filename} />;
+        case 'video/mp4':
+          return <video src={fileUrl} controls style={{ maxWidth: '100%', maxHeight: '500px' }} />;
+        default:
+          return <a href={fileUrl} target="_blank" rel="noopener noreferrer">View File</a>;
+      }
+  };
+
   return (
     <div>
       <h1>File Upload</h1>
@@ -68,7 +89,7 @@ const FileUpload = () => {
       <ul>
         {files.map(file => (
           <li key={file._id}>
-            {file.filename}
+            {renderFilePreview(file)}
             <button onClick={() => handleDownload(file.filename)}>Download</button>
             <button onClick={() => handleDelete(file._id)}>Delete</button>
           </li>
